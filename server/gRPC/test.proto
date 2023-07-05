@@ -1,0 +1,15 @@
+import "google/protobuf/empty.proto";
+
+syntax = "proto3";
+
+package test;
+
+service Test {
+    rpc ping(google.protobuf.Empty) returns (pingResponse);
+}
+
+message pingResponse {
+    string msg = 1;
+    string src_port = 2;
+    string dst_port = 3;
+}

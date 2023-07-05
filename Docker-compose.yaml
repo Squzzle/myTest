@@ -1,0 +1,39 @@
+version: "3.5"
+
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+    networks:
+      mynetwork:
+        ipv4_address: 172.218.0.10
+    environment: 
+      - LOCAL_IP=172.218.0.10
+    volumes:
+      - ./nginx/main.conf:/etc/nginx/nginx.conf
+  server:
+    container_name: server
+    build:
+      context: ./server
+    depends_on:
+      - nginx
+    networks:
+      mynetwork:
+        ipv4_address: 172.218.0.11
+  client:
+    container_name: client
+    build: 
+      context: ./client
+    depends_on:
+      - server
+      - nginx
+    networks:
+      mynetwork:
+        ipv4_address: 172.218.0.12
+
+networks:
+  mynetwork:
+    ipam:
+      config:
+        - subnet: 172.218.0.0/28
